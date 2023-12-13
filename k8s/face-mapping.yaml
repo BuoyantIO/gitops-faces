@@ -1,0 +1,14 @@
+# Emissary-ingress Mapping to route /face/ to the face Service in the faces
+# namespace. The Faces GUI talks to /face/ to fetch the contents of individual
+# cells, so it has to be accessible from outside the cluster.
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: face-mapping
+  namespace: faces
+spec:
+  hostname: "*"
+  prefix: /face/
+  service: face.faces
+  timeout_ms: 0

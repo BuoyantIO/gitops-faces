@@ -1,0 +1,27 @@
+# *** THIS IS NOT SAFE BY ITSELF. ***
+#
+# Emissary-ingress Mapping to route / to the Linkerd Viz dashboard.
+#
+# *** THIS IS NOT SAFE BY ITSELF. ***
+#
+# You really don't want random people on the Internet able to access Linkerd
+# Viz: it shows a little too much about your application. In any real-world
+# scenario, you need to do user auth to protect Linkerd Viz.
+#
+# For Emissary, you actually do that by adding an AuthService rather than
+# changing this Mapping. The Mapping itself is fine, but you need more for the
+# real world.
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: viz-example-mapping
+spec:
+  prefix: /
+  hostname: "*"
+  service: web.linkerd-viz.svc.cluster.local:8084
+  host_rewrite: web.linkerd-viz.svc.cluster.local:8084
+  remove_request_headers:
+  - Origin
+  allow_upgrade:
+  - websocket
