@@ -12,14 +12,33 @@ Mesh Academy] workshop. You can find that workshop source in the
 [real-world-argo-linkerd] repo, and going through that workshop is the best
 way to use this repo.
 
+### Argo CD
+
+Point Argo to the `argocd/applications` directory of this repo. The assumption
+is that you've already installed Linkerd and Emissary-ingress into the
+cluster.
+
+### Other
+
 Alternately, you can also just fork this repo and play around with whatever
 GitOps setup you have going. You'll need a Kubernetes cluster into which
 you've already installed [Linkerd], [Emissary-ingress], and the [Faces demo],
 and both Emissary and Faces must be part of the Linkerd mesh.
 
-Once that's done, point your favorite GitOps setup to the `k8s` directory in
-this repo: the manifests there will configure Emissary and the Faces demo so
-that if you point your browser at the Emissary ingress service, you'll see
+You can look at the `argocd` directory for reference, but here are the steps:
+
+1. Create the `faces` namespace. Make sure it's annotated with
+   `linkerd.io/inject: enabled` (there's a suitable manifest in
+   `argocd/resources/bootstrap/faces-namespace.yaml`).
+
+2. Install the Faces Helm chart from
+   `oci://registry-1.docker.io/dwflynn/faces-chart:0.8.0`.
+
+3. Install the manifests in the `k8s` directory to configure Emissary to talk
+   to Faces.
+
+The end result should be that if you point your browser at the
+`emissary-ingress` service in the `emissary` namespace, you'll see
 
 - The Linkerd Viz dashboard at `/`
 - The Faces demo at `/faces/`
